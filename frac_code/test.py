@@ -2,6 +2,7 @@ import bpy
 from math import  pi
 
 FRAME_COUNT = 250
+CELL_COUNT = 200
 #####################################################################################
 
 
@@ -16,15 +17,28 @@ def recurLayerCollection(layerColl, collName):
             return found
 
 
-def addDriver(obj):
+def addDriverExp(xyzIdx,mesh_obj):
     
-    A = 1 # amplitude
-    P = 0.2 
+    var = mesh_obj.location[xyzIdx]
+    FRAME_COUNT = 250
+    A = 1.5 # amplitude
+    P = 0.2 #period
+    Ps = 0 # phase shift
+    Vs = 3.0 #vertical shift
+    periodCalc = 2*pi/P
+   
     
-    # A*sin((2*PI()/P)*((current_frame/FRAME_COUNT))+P)+V
-   # drv_exp = "{0:.2f} * cos(tau * ({1} - {2}) / ({3} - {2} + 1))"
-    drv_exp = "{0:.2f} * sin((2*{0:4f}/{0:.4f})*((  ))"
-  #  return drv_exp.format(A,pi,P
+    # A*sin((2*PI()/P)*((current_frame/FRAME_COUNT))+Ps)+Vs
+
+    
+   
+    drv_exp = "{0:.2f} *( {1:.2f}* sin({2:.4f}*((frame/{3:1f}  ))+{4:2f})+{5:2f})"
+    
+   # 
+    ee = drv_exp.format(var,A,periodCalc,FRAME_COUNT,Ps,Vs)
+    print(ee)
+    x_curve = mesh_obj.driver_add("location",xyzIdx)
+    x_curve.driver.expression =ee
 
 
 
@@ -53,7 +67,7 @@ def createFragments():
    
 
     # use the interactive window and tab to get the params
-    bpy.ops.object.add_fracture_cell_objects( source_limit=125,)
+    bpy.ops.object.add_fracture_cell_objects( source_limit=CELL_COUNT,)
     bpy.ops.object.select_all(action='DESELECT')
     #select the original sphere and delete it
     bpy.data.objects[main_sphere.name].select_set(True)  
@@ -65,6 +79,8 @@ def createFragments():
 
 
 def main():
+    
+    
     pieces = bpy.data.collections.new(name="pieces")
     bpy.context.scene.collection.children.link(pieces)
     piecesCollection= selectPiecesLayer() 
@@ -73,15 +89,14 @@ def main():
 
 
     createFragments()
+    jj = range(0,CELL_COUNT)
+    dataRange = range(0,3)
+    
 
-    print(piecesCollection)
-    #jj = range(0,10)
-
-    #for k in jj:
-        #print(piecesCollection.all_objects[k].location[0])
- 
- 
-
+    for k in jj:
+         for z in dataRange:
+            addDriverExp(z,piecesCollection.all_objects[k])
+         
 
 
 
