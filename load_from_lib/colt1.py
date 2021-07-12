@@ -1,3 +1,5 @@
+# https://www.youtube.com/watch?v=XqX5wh4YeRw
+
 import bpy
 from math import radians
 
@@ -29,6 +31,14 @@ for face in currentObj.data.polygons:
         face.use_smooth = True
         print(ctr)
     
-    
+#create a disp_modifier
+
+mod_displace = currentObj.modifiers.new("disp1",'DISPLACE');
+
+new_tex = bpy.data.textures.new("mytex",'DISTORTED_NOISE')    
 
 #    bpy.ops.mesh.delete(type='FACE')
+#https://docs.blender.org/api/current/bpy.types.Texture.html
+
+new_tex.noise_scale = 2.0
+mod_displace.texture = new_tex

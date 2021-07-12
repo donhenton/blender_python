@@ -17,6 +17,7 @@
 import bpy, os, sys, importlib
 
 dir = os.path.dirname(bpy.data.filepath)+"\lib"
+print(dir)
 sys.path.append(dir)
 import alpha
 from alpha import report_alpha
