@@ -6,8 +6,7 @@ Experiments with scripting blender.
 ## Code
 
  * frac_code -- code for fractured sphere animation https://www.youtube.com/watch?v=IKCuimFD9P8
- * dis1 -- code from https://behreajj.medium.com/creative-coding-in-blender-2-92-a-primer-7ac1b6fec3f
- * load_from_lib demo of loading code in a separate file a library file
+ * dis1 code from 
 
 
 ## Errors 
